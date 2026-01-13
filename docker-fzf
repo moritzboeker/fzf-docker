@@ -489,6 +489,27 @@ dclean() {
   drmia
 }
 
+#docker compose down
+dcd() {
+  local fileref=$(__docker_compose_fileref_generator $1)
+
+  __docker_compose_pre_test $1 \
+      && eval "docker compose $fileref config --services" \
+        | fzf -m \
+        | while read -r service; do
+            eval "docker compose $fileref down $service"
+          done
+}
+
+
+#docker compose down all
+dcda() {
+  local fileref=$(__docker_compose_fileref_generator $1)
+
+  __docker_compose_pre_test $1 \
+      && eval "docker compose $fileref down"
+}
+
 #docker compose up
 dcu() {
   local fileref=$(__docker_compose_fileref_generator $1)
