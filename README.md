@@ -1,7 +1,23 @@
-Author: MartinRamm
+Author: [MartinRamm](https://github.com/MartinRamm) | Modifications: [moritzboeker](https://github.com/moritzboeker)
 
 This is something I created to increase my productivity with docker/docker compose.
 Feel free to create a PR with improvements - but please keep this documentation up to date!
+
+# ✨ Additional Features
+1. ✅ Launch the up-to-date `docker compose` command instead of the deprecated `docker-compose`
+2. ✅ `dcd`: docker compose down
+3. ✅ `dcda`: docker compose down all services 
+4. ✅ If `dcd`, `dcd`, `dcd` or `dcd` are given an argument, it automatically detects whether it is a file or project name
+    1. File names need to end with `*.yaml` or `*.yml` 
+    ```bash
+    dcua my-custom-docker-compose.yaml = docker compose --file my-custom-docker-compose.yaml up -d
+    dcua node = docker compose -f docker-compose.yaml --project-name my_prefix up -d
+    ```
+    2. Project names must not end with `*.yaml` or `*.yml` 
+    ```bash
+    dcda my-custom-docker-compose.yaml = docker compose --file my-custom-docker-compose.yaml down
+    dcda node = docker compose -f docker-compose.yaml --project-name my_prefix down
+    ```
 
 # Requirements
 
@@ -10,7 +26,7 @@ Feel free to create a PR with improvements - but please keep this documentation 
 
 # Installation instructions
 
-1. Clone this repository: `git clone https://github.com/MartinRamm/fzf-docker.git`
+1. Clone this forked repository: `https://github.com/moritzboeker/fzf-docker.git`
 1. Add to your `.zshrc` or `.bashrc` file this command: `source /path/to/docker-fzf`
 1. (Optional): Customize the `de` command as described in _[Default command for `de`](#default-command-for-de)_
 
@@ -35,10 +51,10 @@ Feel free to create a PR with improvements - but please keep this documentation 
 | drmi    | docker remove image (with force). This includes options to remove dangling images. | multiple |                                                                                                              |
 | drmia   | docker remove all images (with force). This includes dangling images.              |          |                                                                                                              |
 | dclean  | `dsrma` and `drmia`                                                                |          |                                                                                                              |
-| dcd     | docker compose down                                                                | multiple | path to docker-compose file (defaults to recursive search for `docker-compose.yml` or `docker-compose.yaml`) |
-| dcda    | docker compose down all services                                                   | multiple | path to docker-compose file (defaults to recursive search for `docker-compose.yml` or `docker-compose.yaml`) |
-| dcu     | docker compose up (in detached mode)                                               | multiple | path to docker-compose file (defaults to recursive search for `docker-compose.yml` or `docker-compose.yaml`) |
-| dcua    | docker compose up all services (in detached mode)                                  |          | path to docker-compose file (defaults to recursive search for `docker-compose.yml` or `docker-compose.yaml`) |
+| ✨ dcd     | docker compose down                                                                | multiple | path to docker-compose file (defaults to recursive search for `docker-compose.yml` or `docker-compose.yaml`) or project name (if argument does not end with `*.yaml` or `*.yml` |
+| ✨ dcda    | docker compose down all services                                                   | multiple | path to docker-compose file (defaults to recursive search for `docker-compose.yml` or `docker-compose.yaml`) or project name (if argument does not end with `*.yaml` or `*.yml` |
+| ✨ dcu     | docker compose up (in detached mode)                                               | multiple | path to docker-compose file (defaults to recursive search for `docker-compose.yml` or `docker-compose.yaml`) or project name (if argument does not end with `*.yaml` or `*.yml` |
+| ✨ dcua    | docker compose up all services (in detached mode)                                  |          | path to docker-compose file (defaults to recursive search for `docker-compose.yml` or `docker-compose.yaml`) or project name (if argument does not end with `*.yaml` or `*.yml` |
 | dcb     | docker compose build (with --no-cache and --pull)                                  | multiple | path to docker-compose file (defaults to recursive search for `docker-compose.yml` or `docker-compose.yaml`) |
 | dcba    | docker compose build (with --no-cache and --pull) all                              |          | path to docker-compose file (defaults to recursive search for `docker-compose.yml` or `docker-compose.yaml`) |
 | dcp     | docker compose pull                                                                | multiple | path to docker-compose file (defaults to recursive search for `docker-compose.yml` or `docker-compose.yaml`) |
@@ -68,10 +84,25 @@ Alternatively, the user could have used the arrow keys to select the correct con
 ![example gif](single.gif)
 
 ### optional command arguments
+
+#### docker logs
 This image shows the `dl` command executed with `10m` as an optional argument. 
 Therefore the command will only show the logs of the selected container produced in the last 10 minutes, instead of all available logs for this container.
 
 ![example gif](args.gif)
+
+#### ✨ docker compose up/ down
+If `dcd`, `dcd`, `dcd` or `dcd` are given an argument, it automatically detects whether it is a file or project name
+1. File names need to end with `*.yaml` or `*.yml` 
+```bash
+dcua my-custom-docker-compose.yaml = docker compose --file my-custom-docker-compose.yaml up -d
+dcua node = docker compose -f docker-compose.yaml --project-name my_prefix up -d
+```
+2. Project names must not end with `*.yaml` or `*.yml` 
+```bash
+dcda my-custom-docker-compose.yaml = docker compose --file my-custom-docker-compose.yaml down
+dcda node = docker compose -f docker-compose.yaml --project-name my_prefix down
+```
 
 ### fzf mode = multiple
 

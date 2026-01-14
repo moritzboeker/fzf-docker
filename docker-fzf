@@ -32,11 +32,14 @@ __docker_compose_pre_test() {
     return 1;
   fi
 
-  if [[ $(docker compose --file $1 config --services) ]]; then
-    return 0;
+  # check first if argument is docker-compose file or project name
+  if [[ "$1" == *.yaml || "$1" == *.yml ]]; then
+    if [[ $(docker compose --file $1 config --services) ]]; then
+      return 0;
+    fi
+    echo "Invalid service declaration file $1."
+    return 1;
   fi
-  echo "Invalid service declaration file $1."
-  return 1;
 }
 
 # $1: time interval - e.g.: `1m` for 1 minute
@@ -121,7 +124,10 @@ __docker_logs() (
 
 __docker_compose_fileref_generator() {
   if [ ! -z "$1" ]; then
-    echo "--file $1"
+    if [[ $1 == *".yaml" || $1 == *".yml" ]]; then
+      echo "--file $1"
+    elif
+      echo "--project-name $1"
   fi
 }
 
